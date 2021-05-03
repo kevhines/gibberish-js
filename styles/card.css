@@ -21,7 +21,8 @@ div#game-board {
 }
 
 div#new-card-form {
-    width: 300px;
+    width: 277px; /*125 + 125 + 6 + 6 + 15*/
+    margin-right: 15px;
 }
 
 div#textinfo {
@@ -30,14 +31,26 @@ div#textinfo {
 }
 
 div.card {
-    height: 210px;
-    width: 150px;
-    border: 3px solid black;
-    border-radius: .5rem;
+    height: 175px;
+    width: 125px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-right: 15px;
+}
+
+div.pile {
+  
+  font-size: 50px;
+  border-radius: .5rem;
+  border: 3px solid black;
+}
+
+img {
+  height: 175px;
+  width: 125px;
+  border-radius: .5rem;
+  border: 3px solid black;
 }
 
 @media screen {
