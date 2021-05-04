@@ -20,6 +20,7 @@ class Card {
         e.preventDefault();
         const nameInput = document.querySelector("input[id='cardName']")
         const cardURL = "http://localhost:3000/cards/" + this.id
+        if (nameInput.value) {
         console.log("updated card")
         console.log(e)
         console.log(this)
@@ -38,7 +39,11 @@ class Card {
 
         fetch(cardURL, configObj)
         .then(r => r.json())
-        .then(obj => console.log('updated name')) 
+        .then(obj => {this.name = obj.name}) 
+
+        } else {
+            window.alert("You need to enter a name!")
+        }
 
     }
     
