@@ -28,6 +28,10 @@ class PlayableDeck extends Deck {
         this.playedCards.push(card)
     }
 
+    findCard(id) {
+        return this.dealtCards.find(card => card.id === id)
+    }
+
 }
 
 class AllCards extends Deck {
@@ -38,7 +42,6 @@ class AllCards extends Deck {
     }
 
     addCardtoDeck(card) {
-        // debugger
         super.addCardtoDeck(card)
         if (card.name) {
             this.namedCards.push(card)

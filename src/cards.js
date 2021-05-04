@@ -39,7 +39,10 @@ class Card {
 
         fetch(cardURL, configObj)
         .then(r => r.json())
-        .then(obj => {this.name = obj.name}) 
+        .then(obj => {
+            this.name = obj.name
+            game.hasCardBeenNamed(this.id)
+        }) 
 
         } else {
             window.alert("You need to enter a name!")

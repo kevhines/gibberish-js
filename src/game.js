@@ -114,9 +114,29 @@ class Game {
             e.currentTarget.removeEventListener(e.type, game.playCard);
             playerPlayed.append(e.target)
         }
-        debugger
+        //debugger
+        game.hasCardBeenNamed(parseInt(e.target.dataset.id, 10))
     }
 
+    
+    hasCardBeenNamed(id) {
+        let card = this.userDeck.findCard(id)
+        if (!!card.name) {
+            this.playComputerCard()
+        } else {
+            this.getCardName(card)
+        }
+    }
 
+    playComputerCard() {
+        console.log('not written yet')
+        //clear form, draw computer card randomly from unplayed cards place on board
+        //then find rule. if no rule exists prompt for one.
+        //then find rule (it should find one).
+        //then enact rule.
+        //then put both cards in winner's played deck and remove from loser's played deck
+        //then draw users hand again
+        
+    }
 
 }
