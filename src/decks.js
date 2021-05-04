@@ -2,12 +2,20 @@ class Deck {
 
     constructor() {
         this.dealtCards = []
-        this.unplayedCards = []
-        this.playedCards = []
     }
 
     addCardtoDeck(card) {
         this.dealtCards.push(card)
+    }
+
+}
+
+class PlayableDeck extends Deck {
+
+    constructor() {
+        super()
+        this.unplayedCards = []
+        this.playedCards = []
     }
 
     drawCard() {
@@ -19,6 +27,7 @@ class Deck {
     moveCardToPlayed(card) {
         this.playedCards.push(card)
     }
+
 }
 
 class AllCards extends Deck {
