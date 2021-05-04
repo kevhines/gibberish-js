@@ -23,7 +23,7 @@ class Game {
 
         for (let card of cards) {
             let newCard = new Card(card)
-            this.allDeck.addCardtoDeck(card)
+            this.allDeck.addCardtoDeck(newCard)
             newCard.appendCardName()
         }
 
@@ -83,14 +83,26 @@ class Game {
             pos.append(cardIMG)
             if (!randomCard.name) {
                 console.log("name this card!")
-                this.getCardName()
+                this.getCardName(randomCard)
             }
         }
 
     }
 
-    getCardName() {
+    getCardName(namelessCard) {
         const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = `
+        Hey, this card has never been played. Enter a name for it:<br><br>
+        <form id="add-name">
+            <label><strong>Name for this card:</strong></label>
+            <input type="text" id="cardName"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        `
+        const form = document.querySelector("#add-name");
+        form.addEventListener("submit", namelessCard.updateName.bind(namelessCard))
+
+// debugger
 
     }
 

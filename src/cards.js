@@ -16,6 +16,33 @@ class Card {
         gamelog.append(cardName)
     }
 
+    updateName(e) {
+        e.preventDefault();
+        const nameInput = document.querySelector("input[id='cardName']")
+        console.log("updated card")
+        console.log(e)
+        console.log(this)
+
+        let configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({
+              "name": nameInput.value
+        }) }
+
+        fetch(cardURL, configObj)
+        .then(function(response) {return response.json();})
+        .then(function(object) {appendDOM(object);}); 
+
+debugger
+
+    }
+    
+    
+    
     static getCards() {
         fetch("http://localhost:3000/cards")
         .then( r => r.json())
@@ -23,23 +50,6 @@ class Card {
         .catch(e => alert(e))
     
     }
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
 
 }
 
