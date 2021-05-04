@@ -81,10 +81,14 @@ class Game {
             cardIMG.setAttribute("src", "cards/" + randomCard.filename)
             cardIMG.dataset.id = randomCard.id
             pos.append(cardIMG)
-            if (!randomCard.name) {
-                console.log("name this card!")
-                this.getCardName(randomCard)
-            }
+            // if (!randomCard.name) {
+            //     console.log("name this card!")
+            //     //  showPrompt(function(value) {
+            //     //        alert("You entered: " + value);
+            //     //      });
+               
+            //     // this.getCardName(randomCard)
+            // }
         }
 
     }
@@ -102,8 +106,6 @@ class Game {
         const form = document.querySelector("#add-name");
         form.addEventListener("submit", namelessCard.updateName.bind(namelessCard))
 
-// debugger
-
     }
 
     playCard(e) {
@@ -112,6 +114,7 @@ class Game {
             e.currentTarget.removeEventListener(e.type, game.playCard);
             playerPlayed.append(e.target)
         }
+        debugger
     }
 
 
