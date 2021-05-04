@@ -19,25 +19,26 @@ class Card {
     updateName(e) {
         e.preventDefault();
         const nameInput = document.querySelector("input[id='cardName']")
+        const cardURL = "http://localhost:3000/cards/" + this.id
         console.log("updated card")
         console.log(e)
         console.log(this)
-
+        const body = {
+            card: {
+                name: nameInput.value
+            }
+        }
         let configObj = {
-            method: "POST",
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"
             },
-            body: JSON.stringify({
-              "name": nameInput.value
-        }) }
+            body: JSON.stringify(body) }
 
         fetch(cardURL, configObj)
-        .then(function(response) {return response.json();})
-        .then(function(object) {appendDOM(object);}); 
-
-debugger
+        .then(r => r.json())
+        .then(obj => console.log('updated name')) 
 
     }
     
