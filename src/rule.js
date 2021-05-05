@@ -39,7 +39,10 @@ class Rule {
 
             fetch(rulesURL, configObj)
             .then(r => r.json())
-            .then(obj => this.updateCardRules(obj)) 
+            .then(obj => {this.updateCardRules(obj)})
+            .catch(e => console.log("error: " + e))
+
+            
         } else {
             window.alert("Tell me why this card wins!")
         }
@@ -55,6 +58,8 @@ class Rule {
         userCard.addRuleToCard(newRule)
         computerCard.addRuleToCard(newRule)
         game.findRule(computerID)
+
+        
 
     }
 

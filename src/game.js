@@ -162,16 +162,16 @@ class Game {
         let card = this.computerDeck.findCard(cardID)
         const playerPlayed = document.querySelector("#playerPlayed")
         let userID = parseInt(playerPlayed.children[0].dataset.id,10)
-
+// debugger
         if (card.rules.length > 0) {
             console.log("might have a rule!")
             let ruleForCards = card.rules.find(rule => ((rule.winner_id === cardID && rule.loser_id === userID) || (rule.winner_id === userID && rule.loser_id === cardID)))
-            debugger
-            if (!!ruleForCards) {
-                //enactRule
+           // console.log(ruleforCards)
+            if (ruleForCards) {
+                // debugger
                 console.log("found a rule")
-                console.log(ruleforCards)
-                this.enactRule(ruleforCards, cardID, userID)
+                // debugger
+                this.enactRule(ruleForCards, cardID)
             } else {
                 this.ruleForm(cardID, userID)
             }
@@ -181,19 +181,40 @@ class Game {
 
     }
 
-    enactRule(rule, computerID, userID) {
+    enactRule(rule, computerID) {
+
+        const winnerCard = this.allDeck.findCard(rule.winner_id)
+        const loserCard = this.allDeck.findCard(rule.loser_id)
         if (rule.winner_id === computerID) {
-            console.log("comptuer wins")
+            console.log("computer wins")
+            //remove loserCard from user deck
+            game.computerDeck.moveCardToPlayed(loserCard)
+            game.userDeck.removeCardFromDeck(loserCard)
         } else {
             console.log("user wins!")
+          //remove loserCard from user deck
+            //add loser card to user deck
         }
+        this.clearPlayedCards()
+    }
 
+    clearPlayedCards() {
+        const computerPlayed = document.querySelector("#computerPlayed")
+        const playerPlayed = document.querySelector("#playerPlayed")
+        computerPlayed.children[0].remove()
+        playerPlayed.children[0].remove()
+
+        const computerPile = document.querySelector("#computerPile")
+        computerPile.innerText = this.computerDeck.dealtCards.length
+
+        const playerPile = document.querySelector("#playerPile")
+        playerPile.innerText = this.userDeck.dealtCards.length
+
+        this.dealUserHand()
     }
 
 }
 
 
-        //then find rule (it should find one).
-        //then enact rule.
-        //then put both cards in winner's played deck and remove from loser's played deck
+
         //then draw users hand again

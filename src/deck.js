@@ -8,6 +8,11 @@ class Deck {
         this.dealtCards.push(card)
     }
 
+    
+    findCard(id) {
+        return this.dealtCards.find(card => card.id === id)
+    }
+
 }
 
 class PlayableDeck extends Deck {
@@ -28,9 +33,13 @@ class PlayableDeck extends Deck {
         this.playedCards.push(card)
     }
 
-    findCard(id) {
-        return this.dealtCards.find(card => card.id === id)
+    removeCardFromDeck(card) {
+        let index = this.playedCards.indexOf(card)
+        this.playedCards.splice(index,1)
     }
+
+
+
 
 }
 
