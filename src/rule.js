@@ -16,8 +16,8 @@ class Rule {
         let loserID
         let winnerID = parseInt(winnerChoice.value, 10)
         loserID = (winnerID === computerID) ? userID: computerID
-debugger
-        const rulesURL = "http://localhost:3000/rules/"
+// debugger
+        const rulesURL = "http://localhost:3000/rules"
         if (ruleWhy.value) {
             console.log("creating rule")
             console.log(e)
@@ -39,13 +39,22 @@ debugger
 
             fetch(rulesURL, configObj)
             .then(r => r.json())
-            // .then(obj => {
-            //     this.name = obj.name
-            //     game.hasCardBeenNamed(this.id)
-            // }) 
+            .then(obj => this.updateCardRules(obj)) 
         } else {
             window.alert("Tell me why this card wins!")
         }
+
+    }
+
+    static updateCardRules(rule) {
+        let newRule = new Rule(rule)
+        let userID = parseInt(playerPlayed.children[0].dataset.id,10)
+        let computerID = parseInt(computerPlayed.children[0].dataset.id,10)
+        let userCard = game.userDeck.findCard(userID)
+        let computerCard = game.computerDeck.findCard(computerID)
+        userCard.addRuleToCard(newRule)
+        computerCard.addRuleToCard(newRule)
+        game.findRule(computerID)
 
     }
 

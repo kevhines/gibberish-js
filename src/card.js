@@ -20,6 +20,10 @@ class Card {
         gamelog.append(cardName)
     }
 
+    addRuleToCard(rule) {
+        this.rules.push(rule)
+    }
+
     updateName(e) {
         e.preventDefault();
         const nameInput = document.querySelector("input[id='cardName']")

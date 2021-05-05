@@ -159,11 +159,13 @@ class Game {
 
     findRule(cardID) {
         console.log("find a rule!")
+        debugger
         let card = this.computerDeck.findCard(cardID)
         const playerPlayed = document.querySelector("#playerPlayed")
         let userID = parseInt(playerPlayed.children[0].dataset.id,10)
 
         if (card.rules.length > 0) {
+            console.log("might have a rule!")
             debugger
         } else {
             this.ruleForm(cardID, userID)
