@@ -163,11 +163,12 @@ class Game {
     hasCardBeenNamed(id) {
         let card = this.userDeck.findCard(id)
         if (!!card.name) {
+            this.appendtoGameLog("User plays " + card.name)
             this.playComputerCard()
         } else {
             this.getCardName(card)
         }
-        this.appendtoGameLog("User plays " + card.name)
+        
     }
 
     playComputerCard() {
@@ -177,7 +178,7 @@ class Game {
         const computerPlayed = document.querySelector("#computerPlayed")
         let randomCard = this.computerDeck.drawCard()
 
-        this.appendtoGameLog("User plays " + randomCard.name)
+        this.appendtoGameLog("Computer plays " + randomCard.name)
 
         const cardIMG = document.createElement("IMG")
         cardIMG.setAttribute("src", "cards/" + randomCard.filename)
@@ -214,16 +215,18 @@ class Game {
 
         const winnerCard = this.allDeck.findCard(rule.winner_id)
         const loserCard = this.allDeck.findCard(rule.loser_id)
+        let message = ""
         if (rule.winner_id === computerID) {
-            console.log("computer wins")
+            message = `Computer Wins: ${winnerCard.name} beats ${loserCard.name} because ${rule.rule}` 
             //remove loserCard from user deck
             game.computerDeck.moveCardToPlayed(loserCard)
             game.userDeck.removeCardFromDeck(loserCard)
         } else {
-            console.log("user wins!")
+            message = `User Wins: ${winnerCard.name} beats ${loserCard.name} because ${rule.rule}`
             game.userDeck.moveCardToPlayed(loserCard)
             game.computerDeck.removeCardFromDeck(loserCard)
         }
+        this.appendtoGameLog(message)
         this.clearPlayedCards()
     }
 
@@ -252,7 +255,7 @@ class Game {
 
 }
 
-//log what card played and what card won
+//switch log to pop new message on top
 //when pile is empty reshuffle
 //clear cards button (it'll clear immediately right now)
 //when total cards is 0 someone wins!
@@ -261,3 +264,5 @@ class Game {
 //update text
 
 //refactor everything!!!!
+
+//take turns going first?
