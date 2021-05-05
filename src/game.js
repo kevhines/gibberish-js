@@ -31,20 +31,38 @@ class Game {
     }
 
     sortCards() {
+
         const totalCards = this.allDeck.dealtCards.length
         const totalNamedCards = this.allDeck.namedCards.length
-
+        let unnamedCards = this.allDeck.dealtCards.filter(card => !this.allDeck.namedCards.includes(card))
+        let randomCard 
         if (totalNamedCards <= totalCards/2) {
             this.computerDeck.dealtCards = [...this.allDeck.namedCards]
-            let unnamedCards = this.allDeck.dealtCards.filter(card => !this.allDeck.namedCards.includes(card))
-            let randomCard 
+ 
             for (let i = 0; i < this.allDeck.namedCards.length; i++) {
                 randomCard = unnamedCards.splice([Math.floor(Math.random()*unnamedCards.length)],1)
                 this.userDeck.addCardtoDeck(randomCard[0])
             }
         } else {
             //deal half to each person, perhaps limited at 20 or 25
-            console.log("can not get here yet")
+
+            let cardsForComputer = [...this.allDeck.namedCards]
+            
+            for (let i = 0; i < (totalCards/2); i++) {
+                randomCard = cardsForComputer.splice([Math.floor(Math.random()*(totalCards/2))],1)
+                this.computerDeck.addCardtoDeck(randomCard[0])
+            }  
+            let cardsForUser = [...cardsForComputer, ...unnamedCards]
+            for (let i = 0; i < (totalCards/2); i++) {
+                randomCard = cardsForUser.splice([Math.floor(Math.random()*(totalCards/2))],1)
+                this.userDeck.addCardtoDeck(randomCard[0])
+            }  
+
+
+
+
+
+
         }
 
         this.createPiles()
@@ -220,5 +238,3 @@ class Game {
 }
 
 
-
-        //then draw users hand again
