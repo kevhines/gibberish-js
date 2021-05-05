@@ -24,7 +24,6 @@ class Game {
         for (let card of cards) {
             let newCard = new Card(card)
             this.allDeck.addCardtoDeck(newCard)
-            newCard.appendCardName()
         }
 
         this.sortCards()
@@ -32,11 +31,14 @@ class Game {
 
     sortCards() {
 
-        const totalCards = this.allDeck.dealtCards.length
+        const cardsPerPile = (this.allDeck.dealtCards.length) / 2
+
+        this.appendtoGameLog(cardsPerPile + " cards dealt to each player!")
+
         const totalNamedCards = this.allDeck.namedCards.length
         let unnamedCards = this.allDeck.dealtCards.filter(card => !this.allDeck.namedCards.includes(card))
         let randomCard 
-        if (totalNamedCards <= totalCards/2) {
+        if (totalNamedCards <= cardsPerPile) {
             this.computerDeck.dealtCards = [...this.allDeck.namedCards]
  
             for (let i = 0; i < this.allDeck.namedCards.length; i++) {
@@ -47,14 +49,14 @@ class Game {
             //deal half to each person, perhaps limited at 20 or 25
 
             let cardsForComputer = [...this.allDeck.namedCards]
-            
-            for (let i = 0; i < (totalCards/2); i++) {
-                randomCard = cardsForComputer.splice([Math.floor(Math.random()*(totalCards/2))],1)
+            for (let i = 0; i < cardsPerPile; i++) {
+                randomCard = cardsForComputer.splice([Math.floor(Math.random()*cardsForComputer.length)],1)
                 this.computerDeck.addCardtoDeck(randomCard[0])
             }  
             let cardsForUser = [...cardsForComputer, ...unnamedCards]
-            for (let i = 0; i < (totalCards/2); i++) {
-                randomCard = cardsForUser.splice([Math.floor(Math.random()*(totalCards/2))],1)
+            for (let i = 0; i < cardsPerPile; i++) {
+                // debugger
+                randomCard = cardsForUser.splice([Math.floor(Math.random()*cardsForUser.length)],1)
                 this.userDeck.addCardtoDeck(randomCard[0])
             }  
 
@@ -100,6 +102,7 @@ class Game {
         } else {
             const cardIMG = document.createElement("IMG")
             let randomCard = this.userDeck.drawCard()
+            // debugger
             cardIMG.setAttribute("src", "cards/" + randomCard.filename)
             cardIMG.dataset.id = randomCard.id
             pos.append(cardIMG)
@@ -164,6 +167,7 @@ class Game {
         } else {
             this.getCardName(card)
         }
+        this.appendtoGameLog("User plays " + card.name)
     }
 
     playComputerCard() {
@@ -172,6 +176,9 @@ class Game {
 
         const computerPlayed = document.querySelector("#computerPlayed")
         let randomCard = this.computerDeck.drawCard()
+
+        this.appendtoGameLog("User plays " + randomCard.name)
+
         const cardIMG = document.createElement("IMG")
         cardIMG.setAttribute("src", "cards/" + randomCard.filename)
         cardIMG.dataset.id = randomCard.id
@@ -235,6 +242,22 @@ class Game {
         this.dealUserHand()
     }
 
+    
+    appendtoGameLog(msg) {
+        const gamelog = document.querySelector("#gamelog")
+        const newEntry = document.createElement("li")
+        newEntry.innerText = msg
+        gamelog.append(newEntry)
+    }
+
 }
 
+//log what card played and what card won
+//when pile is empty reshuffle
+//clear cards button (it'll clear immediately right now)
+//when total cards is 0 someone wins!
+//start game button?
+//display how many total cards and how many cards in pile
+//update text
 
+//refactor everything!!!!

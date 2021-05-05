@@ -24,7 +24,10 @@ class PlayableDeck extends Deck {
     }
 
     drawCard() {
-        let randomCard = this.unplayedCards.splice([Math.floor(Math.random()*this.unplayedCards.length)],1)
+        let randomIndex = Math.floor(Math.random()*this.unplayedCards.length)
+        // debugger
+        let randomCard = this.unplayedCards.splice([randomIndex],1)
+        // debugger
         this.moveCardToPlayed(randomCard[0])
         return randomCard[0]
     }

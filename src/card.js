@@ -9,16 +9,6 @@ class Card {
         this.rules = [...winRules, ...loseRules]
     }
 
-    appendCardName() {
-        const gamelog = document.querySelector("#gamelog")
-        const cardName = document.createElement("li")
-        if (this.name) {
-            cardName.innerText = this.name
-        } else {
-            cardName.innerText = "Unnamed card: Number " + this.id
-        }
-        gamelog.append(cardName)
-    }
 
     addRuleToCard(rule) {
         this.rules.push(rule)
