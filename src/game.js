@@ -81,14 +81,6 @@ class Game {
             cardIMG.setAttribute("src", "cards/" + randomCard.filename)
             cardIMG.dataset.id = randomCard.id
             pos.append(cardIMG)
-            // if (!randomCard.name) {
-            //     console.log("name this card!")
-            //     //  showPrompt(function(value) {
-            //     //        alert("You entered: " + value);
-            //     //      });
-               
-            //     // this.getCardName(randomCard)
-            // }
         }
 
     }
@@ -130,13 +122,24 @@ class Game {
 
     playComputerCard() {
         console.log('not written yet')
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = ""
+
+        const computerPlayed = document.querySelector("#computerPlayed")
+        let randomCard = this.computerDeck.drawCard()
+        const cardIMG = document.createElement("IMG")
+        cardIMG.setAttribute("src", "cards/" + randomCard.filename)
+        cardIMG.dataset.id = randomCard.id
+        computerPlayed.append(cardIMG)
+
+        
+    }
+
+}
+
         //clear form, draw computer card randomly from unplayed cards place on board
         //then find rule. if no rule exists prompt for one.
         //then find rule (it should find one).
         //then enact rule.
         //then put both cards in winner's played deck and remove from loser's played deck
         //then draw users hand again
-        
-    }
-
-}
