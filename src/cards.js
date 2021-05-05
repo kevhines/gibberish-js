@@ -3,6 +3,7 @@ class Card {
         this.id = card.id
         this.name = card.name
         this.filename = card.filename
+        this.rules = [...card.rules_winner, ...card.rules_loser]
     }
 
     appendCardName() {
@@ -51,6 +52,19 @@ class Card {
     }
     
     
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     static getCards() {
         fetch("http://localhost:3000/cards")

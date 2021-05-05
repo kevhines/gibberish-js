@@ -100,6 +100,23 @@ class Game {
 
     }
 
+    createRule(computerID, userID) {
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = `
+       I don't know who wins this hand. You decide!<br><br>
+        <form id="add-rule">
+            <label><strong>Choose a Card that wins:</strong></label>
+            <label><strong>Why does this card win?</strong></label>
+            <input type="text" id="rulesWhy"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        `
+        const form = document.querySelector("#add-rule");
+        debugger
+       // form.addEventListener("submit", namelessCard.updateName.bind(namelessCard))
+
+    }
+
     playCard(e) {
         const playerPlayed = document.querySelector("#playerPlayed")
         if (e.target.nodeName === "IMG") {
@@ -121,7 +138,6 @@ class Game {
     }
 
     playComputerCard() {
-        console.log('not written yet')
         const formSpace = document.querySelector("#new-card-form")
         formSpace.innerHTML = ""
 
@@ -131,13 +147,25 @@ class Game {
         cardIMG.setAttribute("src", "cards/" + randomCard.filename)
         cardIMG.dataset.id = randomCard.id
         computerPlayed.append(cardIMG)
+        this.findRule(randomCard.id)
+    }
 
-        
+    findRule(cardID) {
+        console.log("find a rule!")
+        let card = this.computerDeck.findCard(cardID)
+        const playerPlayed = document.querySelector("#playerPlayed")
+        let userID = playerPlayed.children[0].dataset.id
+
+        if (card.rules.length > 0) {
+            debugger
+        } else {
+            this.createRule(cardID, userID)
+        }
+
     }
 
 }
 
-        //clear form, draw computer card randomly from unplayed cards place on board
         //then find rule. if no rule exists prompt for one.
         //then find rule (it should find one).
         //then enact rule.
