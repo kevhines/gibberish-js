@@ -100,7 +100,7 @@ class Game {
 
     }
 
-    createRule(computerID, userID) {
+    ruleForm(computerID, userID) {
         let computerCard = this.computerDeck.findCard(computerID)
         let playerCard = this.userDeck.findCard(userID)
         const formSpace = document.querySelector("#new-card-form")
@@ -108,19 +108,19 @@ class Game {
         I don't know who wins this hand. You decide!<br><br>
         <form id="add-rule">
             <label><strong>Choose a Card that wins:</strong></label><br>
-            <select id="rulesWinner" name="rulesWinner" >  
+            <select id="ruleWinner" name="ruleWinner" >  
                 <option value="${computerID}">${computerCard.name}</option>  
                 <option value="${userID}">${playerCard.name}</option>  
             </select><br><br>
 
             <label><strong>Why does this card win?</strong></label>
-            <input type="text" id="rulesWhy"><br><br>
+            <input type="text" id="ruleWhy"><br><br>
 
             <input type="submit" value="Submit">
         </form>
         `
         const form = document.querySelector("#add-rule");
-       // form.addEventListener("submit", namelessCard.updateName.bind(namelessCard))
+        form.addEventListener("submit", Rule.createRule.bind(Rule))
 
     }
 
@@ -166,7 +166,7 @@ class Game {
         if (card.rules.length > 0) {
             debugger
         } else {
-            this.createRule(cardID, userID)
+            this.ruleForm(cardID, userID)
         }
 
     }
