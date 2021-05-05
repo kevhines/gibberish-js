@@ -159,23 +159,40 @@ class Game {
 
     findRule(cardID) {
         console.log("find a rule!")
-        debugger
         let card = this.computerDeck.findCard(cardID)
         const playerPlayed = document.querySelector("#playerPlayed")
         let userID = parseInt(playerPlayed.children[0].dataset.id,10)
 
         if (card.rules.length > 0) {
             console.log("might have a rule!")
+            let ruleForCards = card.rules.find(rule => ((rule.winner_id === cardID && rule.loser_id === userID) || (rule.winner_id === userID && rule.loser_id === cardID)))
             debugger
+            if (!!ruleForCards) {
+                //enactRule
+                console.log("found a rule")
+                console.log(ruleforCards)
+                this.enactRule(ruleforCards, cardID, userID)
+            } else {
+                this.ruleForm(cardID, userID)
+            }
         } else {
             this.ruleForm(cardID, userID)
         }
 
     }
 
+    enactRule(rule, computerID, userID) {
+        if (rule.winner_id === computerID) {
+            console.log("comptuer wins")
+        } else {
+            console.log("user wins!")
+        }
+
+    }
+
 }
 
-        //create that rule
+
         //then find rule (it should find one).
         //then enact rule.
         //then put both cards in winner's played deck and remove from loser's played deck
