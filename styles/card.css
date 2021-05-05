@@ -54,7 +54,7 @@ img {
 @media screen {
     /* --- Reset Styles --- */
     * {
-      list-style: none;
+      
       margin: 0;
       padding: 0;
     }

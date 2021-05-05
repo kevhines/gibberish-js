@@ -250,12 +250,11 @@ class Game {
         const gamelog = document.querySelector("#gamelog")
         const newEntry = document.createElement("li")
         newEntry.innerText = msg
-        gamelog.append(newEntry)
+        gamelog.prepend(newEntry)
     }
 
 }
 
-//switch log to pop new message on top
 //when pile is empty reshuffle
 //clear cards button (it'll clear immediately right now)
 //when total cards is 0 someone wins!
