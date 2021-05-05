@@ -6,7 +6,23 @@ class Game {
         this.userDeck = new PlayableDeck()
     }
 
-    dealCards() {
+    startGameForm() {
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = `
+        <strong>To start the game click this button!</strong><br><br>
+        <form id="start-game-name">
+            <center><input type="submit" value="Start Game"></center>
+        </form>
+        `
+    
+        const form = document.querySelector("#start-game-name");
+        form.addEventListener("submit", this.dealCards.bind(this))
+    }
+
+    dealCards(e) {
+        e.preventDefault();
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = ""
         this.fetchCards()
         
     }
@@ -255,11 +271,15 @@ class Game {
 
 }
 
-//when pile is empty reshuffle
-//clear cards button (it'll clear immediately right now)
-//when total cards is 0 someone wins!
 //start game button?
+//clear cards button (it'll clear immediately right now)
+
 //display how many total cards and how many cards in pile
+//when pile is empty reshuffle
+
+//when total cards is 0 someone wins!
+
+
 //update text
 
 //refactor everything!!!!

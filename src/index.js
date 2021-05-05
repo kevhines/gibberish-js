@@ -1,4 +1,5 @@
 
 
 let game = new Game()
-game.dealCards()
+game.startGameForm()
+// game.dealCards()
