@@ -101,18 +101,25 @@ class Game {
     }
 
     createRule(computerID, userID) {
+        let computerCard = this.computerDeck.findCard(computerID)
+        let playerCard = this.userDeck.findCard(userID)
         const formSpace = document.querySelector("#new-card-form")
         formSpace.innerHTML = `
-       I don't know who wins this hand. You decide!<br><br>
+        I don't know who wins this hand. You decide!<br><br>
         <form id="add-rule">
-            <label><strong>Choose a Card that wins:</strong></label>
+            <label><strong>Choose a Card that wins:</strong></label><br>
+            <select id="rulesWinner" name="rulesWinner" >  
+                <option value="${computerID}">${computerCard.name}</option>  
+                <option value="${userID}">${playerCard.name}</option>  
+            </select><br><br>
+
             <label><strong>Why does this card win?</strong></label>
             <input type="text" id="rulesWhy"><br><br>
+
             <input type="submit" value="Submit">
         </form>
         `
         const form = document.querySelector("#add-rule");
-        debugger
        // form.addEventListener("submit", namelessCard.updateName.bind(namelessCard))
 
     }
@@ -154,7 +161,7 @@ class Game {
         console.log("find a rule!")
         let card = this.computerDeck.findCard(cardID)
         const playerPlayed = document.querySelector("#playerPlayed")
-        let userID = playerPlayed.children[0].dataset.id
+        let userID = parseInt(playerPlayed.children[0].dataset.id,10)
 
         if (card.rules.length > 0) {
             debugger
@@ -166,7 +173,7 @@ class Game {
 
 }
 
-        //then find rule. if no rule exists prompt for one.
+        //create that rule
         //then find rule (it should find one).
         //then enact rule.
         //then put both cards in winner's played deck and remove from loser's played deck
