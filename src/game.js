@@ -53,12 +53,16 @@ class Game {
     }
 
     createPiles() {
-        const computerPile = document.querySelector("#computerPile")
-        computerPile.innerText = this.computerDeck.dealtCards.length
         this.computerDeck.unplayedCards = [...this.computerDeck.dealtCards]
-        const playerPile = document.querySelector("#playerPile")
-        playerPile.innerText = this.userDeck.dealtCards.length
         this.userDeck.unplayedCards = [...this.userDeck.dealtCards]
+        
+        const computerPile = document.querySelector("#computerPile")
+        computerPile.innerText = this.computerDeck.totalCards()
+        
+        const playerPile = document.querySelector("#playerPile")
+        playerPile.innerText = this.userDeck.totalCards()
+       
+
     }
 
     dealUserHand() {
@@ -192,8 +196,8 @@ class Game {
             game.userDeck.removeCardFromDeck(loserCard)
         } else {
             console.log("user wins!")
-          //remove loserCard from user deck
-            //add loser card to user deck
+            game.userDeck.moveCardToPlayed(loserCard)
+            game.computerDeck.removeCardFromDeck(loserCard)
         }
         this.clearPlayedCards()
     }
@@ -205,10 +209,10 @@ class Game {
         playerPlayed.children[0].remove()
 
         const computerPile = document.querySelector("#computerPile")
-        computerPile.innerText = this.computerDeck.dealtCards.length
+        computerPile.innerText = this.computerDeck.totalCards()
 
         const playerPile = document.querySelector("#playerPile")
-        playerPile.innerText = this.userDeck.dealtCards.length
+        playerPile.innerText = this.userDeck.totalCards()
 
         this.dealUserHand()
     }

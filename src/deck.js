@@ -38,6 +38,9 @@ class PlayableDeck extends Deck {
         this.playedCards.splice(index,1)
     }
 
+    totalCards() {
+        return this.playedCards.length + this.unplayedCards.length
+    }
 
 
 
