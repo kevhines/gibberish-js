@@ -46,6 +46,11 @@ class PlayableDeck extends Deck {
         return this.unplayedCards.length
     }
 
+    clear() {
+        this.unplayedCards = []
+        this.playedCards = []
+    }
+
 
 
 }
@@ -62,6 +67,10 @@ class AllCards extends Deck {
         if (card.name) {
             this.namedCards.push(card)
         }
+    }
+
+    resetNamed() {
+        this.namedCards = this.unplayedCards.filter(card => card.name)
     }
 
 }

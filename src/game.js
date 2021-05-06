@@ -120,6 +120,7 @@ class Game {
  
  
         playerCards.addEventListener('click',this.playCard) 
+        this.refreshPileCount()
     }
 
     placeCard(pos) {
@@ -208,6 +209,7 @@ class Game {
         cardIMG.setAttribute("src", "cards/" + randomCard.filename)
         cardIMG.dataset.id = randomCard.id
         computerPlayed.append(cardIMG)
+        this.refreshPileCount()
         this.findRule(randomCard.id)
     }
 
@@ -258,6 +260,15 @@ class Game {
         formSpace.innerHTML = ""
     }
 
+    clearUserHand() {
+        const firstPos = document.querySelector("#firstPos")
+        const secondPos = document.querySelector("#secondPos")
+        const thirdPos = document.querySelector("#thirdPos")
+        firstPos.innerHTML = ""
+        secondPos.innerHTML = ""
+        thirdPos.innerHTML = ""
+    }
+
     showWinner(msg) {
         const formSpace = document.querySelector("#new-card-form")
         formSpace.innerHTML = `
@@ -281,29 +292,55 @@ class Game {
         computerPlayed.children[0].remove()
         playerPlayed.children[0].remove()
 
-        this.checkforWinner()
-        this.checkforShuffle()
-        this.refreshPileCount()
-        this.dealUserHand()
+        if (!this.checkforWinner()) {
+            this.checkforShuffle()
+            this.refreshPileCount()
+            this.dealUserHand()
+        }
     }
 
     checkforWinner() {
-        if (game.userDeck.totalCards === 0) {
+        if (game.userDeck.totalCards() === 0) {
             this.gameOver("Computer")
-        } else if (game.computerDeck.totalCards === 0) {
+            return true
+        } else if (game.computerDeck.totalCards() === 0) {
             this.gameOver("User")
+            return true
         }
 
     }
 
-    gameOver() {
-        //clear board - everything
-        //display win message
-        //reset to start button
+    gameOver(winner) {
+        //clear board - everything (user hand, form, any played cards)
+
+        this.clearForm()
+        this.clearUserHand()
+        this.appendtoGameLog(winner + " WON!")
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = `
+        <strong>${winner} WINS!</strong><br><br>
+        <form id="new-game">
+            <center><input type="submit" value="New Game"></center>
+        </form>
+        `
+    
+        const form = document.querySelector("#new-game");
+        form.addEventListener("submit", this.newGame.bind(this))
+        
+    }
+
+    newGame(e) {
+        e.preventDefault()
+        this.clearForm()
+        this.appendtoGameLog("New Game Starting")
+        this.computerDeck.clear()
+        this.userDeck.clear()
+        this.allDeck.resetNamed()
+        this.sortCards()
+        
     }
 
     checkforShuffle() {
-        //untested!!
 
         if (this.userDeck.totalUnplayedCards() === 0 && this.userDeck.playedCards.length > 3) {
             let userHand = this.currentUserHand()
@@ -346,7 +383,6 @@ class Game {
 }
 
 
-// refresh pile count after I draw cards into hand and after computer plays card?
 //when total cards is 0 someone wins! (check after enactrule)
 //might not need dealth cards - can just use unplayed????
 
