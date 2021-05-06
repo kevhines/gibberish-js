@@ -38,11 +38,26 @@ div.card {
 }
 
 div.pile {
-  
-  font-size: 50px;
   border-radius: .5rem;
   border: 3px solid black;
 }
+
+div.pile > .count {
+  position: relative;
+  font-size: 50px;
+  left: 45px;
+
+}
+
+div.pile > .total {
+  position: relative;
+  font-size: 15px;
+  top:65px;
+  right: 15px;
+
+}
+
+
 
 img {
   height: 175px;

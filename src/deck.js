@@ -45,6 +45,10 @@ class PlayableDeck extends Deck {
         return this.playedCards.length + this.unplayedCards.length
     }
 
+    totalUnplayedCards() {
+        return this.unplayedCards.length
+    }
+
 
 
 }

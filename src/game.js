@@ -91,14 +91,26 @@ class Game {
     createPiles() {
         this.computerDeck.unplayedCards = [...this.computerDeck.dealtCards]
         this.userDeck.unplayedCards = [...this.userDeck.dealtCards]
-        
-        const computerPile = document.querySelector("#computerPile")
-        computerPile.innerText = this.computerDeck.totalCards()
-        
-        const playerPile = document.querySelector("#playerPile")
-        playerPile.innerText = this.userDeck.totalCards()
+        this.refreshPileCount()
+
        
 
+    }
+
+    refreshPileCount() {
+
+        const computerPile = document.querySelector("#computerPile")
+        let computerUnplayed = this.computerDeck.totalUnplayedCards()
+        let computerTotal = this.computerDeck.totalCards()
+        let computerCounts = `<span class="count">${computerUnplayed}</span><span class="total">${computerTotal} total cards</span>`
+
+        const playerPile = document.querySelector("#playerPile")
+        let userUnplayed = this.userDeck.totalUnplayedCards()
+        let userTotal = this.userDeck.totalCards()
+        let userCounts = `<span class="count">${userUnplayed}</span><span class="total">${userTotal} total cards</span>`
+        
+        computerPile.innerHTML = computerCounts
+        playerPile.innerHTML = userCounts
     }
 
     dealUserHand() {
@@ -280,11 +292,7 @@ class Game {
         computerPlayed.children[0].remove()
         playerPlayed.children[0].remove()
 
-        const computerPile = document.querySelector("#computerPile")
-        computerPile.innerText = this.computerDeck.totalCards()
-
-        const playerPile = document.querySelector("#playerPile")
-        playerPile.innerText = this.userDeck.totalCards()
+        this.refreshPileCount()
 
         this.dealUserHand()
     }
@@ -301,7 +309,6 @@ class Game {
 
 
 
-//display how many total cards and how many cards in pile
 //when pile is empty reshuffle (check after enactrule)
 //when total cards is 0 someone wins! (check after enactrule)
 
