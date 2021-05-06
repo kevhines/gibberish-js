@@ -106,9 +106,13 @@ class Game {
         const secondPos = document.querySelector("#secondPos")
         const thirdPos = document.querySelector("#thirdPos")
         const playerCards = document.querySelector("#playerCards")
+
         this.placeCard(firstPos)
+
         this.placeCard(secondPos)
+
         this.placeCard(thirdPos)
+ 
         playerCards.addEventListener('click',this.playCard) 
     }
 
@@ -243,10 +247,34 @@ class Game {
             game.computerDeck.removeCardFromDeck(loserCard)
         }
         this.appendtoGameLog(message)
-        this.clearPlayedCards()
+        this.clearForm()
+        this.showWinner(message)
+
     }
 
-    clearPlayedCards() {
+    clearForm() {
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = ""
+    }
+
+    showWinner(msg) {
+        const formSpace = document.querySelector("#new-card-form")
+        formSpace.innerHTML = `
+        ${msg}<br><br>
+        <form id="clear-cards">
+            <center><input type="submit" value="Clear Cards"></center>
+        </form>
+        `
+    
+        const form = document.querySelector("#clear-cards");
+        form.addEventListener("submit", this.clearPlayedCards.bind(this))
+
+    }
+
+
+    clearPlayedCards(e) {
+        e.preventDefault();
+        this.clearForm()
         const computerPlayed = document.querySelector("#computerPlayed")
         const playerPlayed = document.querySelector("#playerPlayed")
         computerPlayed.children[0].remove()
@@ -271,17 +299,16 @@ class Game {
 
 }
 
-//start game button?
-//clear cards button (it'll clear immediately right now)
+
 
 //display how many total cards and how many cards in pile
-//when pile is empty reshuffle
-
-//when total cards is 0 someone wins!
+//when pile is empty reshuffle (check after enactrule)
+//when total cards is 0 someone wins! (check after enactrule)
 
 
 //update text
 
+//error handeling - no catch errors right now and no error handeling in controllers
 //refactor everything!!!!
 
 //take turns going first?
