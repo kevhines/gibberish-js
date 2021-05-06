@@ -18,7 +18,7 @@ div#game-board {
 
 }
 
-div#new-card-form {
+div#card-display-form {
     width: 277px; /*125 + 125 + 6 + 6 + 15*/
     margin-right: 15px;
 }

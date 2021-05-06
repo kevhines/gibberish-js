@@ -4,27 +4,154 @@ class Game {
         this.allDeck = new AllCards()
         this.computerDeck = new PlayableDeck()
         this.userDeck = new PlayableDeck()
+        this.firstPos = document.querySelector("#firstPos")
+        this.secondPos = document.querySelector("#secondPos")
+        this.thirdPos = document.querySelector("#thirdPos")
+    }
+
+    //createForms
+
+    createForm(stringHTML,callback) {
+        const formSpace = document.querySelector("#card-display-form")
+        formSpace.innerHTML = stringHTML
+        const form = document.querySelector("#card-form");
+        form.addEventListener("submit",callback)
     }
 
     startGameForm() {
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = `
+        
+        let stringHTML = `
         <strong>To start the game click this button!</strong><br><br>
-        <form id="start-game-name">
+        <form id="card-form">
             <center><input type="submit" value="Start Game"></center>
         </form>
         `
-    
-        const form = document.querySelector("#start-game-name");
-        form.addEventListener("submit", this.dealCards.bind(this))
+        this.createForm(stringHTML,this.dealCards.bind(this))
     }
+
+    getCardName(namelessCard) {
+        
+        let stringHTML = `
+        Hey, this card has never been played. Enter a name for it:<br><br>
+        <form id="card-form">
+            <label><strong>Name for this card:</strong></label>
+            <input type="text" id="cardName"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        `
+        this.createForm(stringHTML,namelessCard.updateName.bind(namelessCard))
+
+    }
+
+    ruleForm(computerID, userID) {
+        let computerCard = this.allDeck.findCard(computerID)
+        let playerCard = this.allDeck.findCard(userID)
+
+        let stringHTML = `
+        I don't know who wins this hand. You decide!<br><br>
+        <form id="card-form">
+            <label><strong>Choose a Card that wins:</strong></label><br>
+            <select id="ruleWinner" name="ruleWinner" >  
+                <option value="${computerID}">${computerCard.name}</option>  
+                <option value="${userID}">${playerCard.name}</option>  
+            </select><br><br>
+
+            <label><strong>Why does this card win?</strong></label>
+            <input type="text" id="ruleWhy"><br><br>
+
+            <input type="submit" value="Submit">
+        </form>
+        `
+        this.createForm(stringHTML,Rule.createRule.bind(Rule))
+
+
+    }
+
+        showWinner(msg) {
+       
+        let stringHTML = `
+        ${msg}<br><br>
+        <form id="card-form">
+            <center><input type="submit" value="Clear Cards"></center>
+        </form>
+        `
+    
+        this.createForm(stringHTML,this.clearPlayedCards.bind(this))
+
+    }
+
+    gameOver(winner) {
+        //clear board - everything (user hand, form, any played cards)
+
+        this.clearForm()
+        this.clearUserHand()
+        this.appendtoGameLog(winner + " WON!")
+
+        
+        let stringHTML = `
+        <strong>${winner} WINS!</strong><br><br>
+        <form id="card-form">
+            <center><input type="submit" value="New Game"></center>
+        </form>
+        `
+    
+        this.createForm(stringHTML, this.newGame.bind(this))
+
+        
+    }
+
+    clearForm() {
+        const formSpace = document.querySelector("#card-display-form")
+        formSpace.innerHTML = ""
+    }
+
+    ///end of form creation (and the clear form thing.)
+
+    //stuff involving User Hand
+
+    currentUserHand() {
+        const userHand =[]
+        if (this.firstPos.children[0]) {
+            userHand.push(this.allDeck.findCard(parseInt(this.firstPos.children[0].dataset.id,10)))
+        }
+        if (this.secondPos.children[0]) {
+        userHand.push(this.allDeck.findCard(parseInt(this.secondPos.children[0].dataset.id,10)))
+        }
+        if (this.thirdPos.children[0]) {
+        userHand.push(this.allDeck.findCard(parseInt(this.thirdPos.children[0].dataset.id,10)))
+        }
+        return userHand
+
+    }
+
+    dealUserHand() {
+        const playerCards = document.querySelector("#playerCards")
+        let unplayedUserCards = this.userDeck.totalUnplayedCards()
+
+
+        if (unplayedUserCards > 0) {this.placeCard(this.firstPos)}
+        if (unplayedUserCards > 0) {this.placeCard(this.secondPos)}
+        if (unplayedUserCards > 0) {this.placeCard(this.thirdPos)}
+
+ 
+ 
+        playerCards.addEventListener('click',this.playCard) 
+        this.refreshPileCount()
+    }
+
+    clearUserHand() {
+        this.firstPos.innerHTML = ""
+        this.secondPos.innerHTML = ""
+        this.thirdPos.innerHTML = ""
+    }
+
+    //end of User Hand stuff
+
 
     dealCards(e) {
         e.preventDefault();
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = ""
+        this.clearForm()
         this.fetchCards()
-        
     }
 
     fetchCards() {
@@ -41,45 +168,34 @@ class Game {
             let newCard = new Card(card)
             this.allDeck.addCardtoDeck(newCard)
         }
-
         this.sortCards()
     }
 
     sortCards() {
 
         const cardsPerPile = (this.allDeck.unplayedCards.length) / 2
-
         this.appendtoGameLog(cardsPerPile + " cards dealt to each player!")
-
         const totalNamedCards = this.allDeck.namedCards.length
         let unnamedCards = this.allDeck.unplayedCards.filter(card => !this.allDeck.namedCards.includes(card))
         let randomCard 
+        let cardsForUser = []
+        let userCardLimit = cardsPerPile
+
         if (totalNamedCards <= cardsPerPile) {
             this.computerDeck.unplayedCards = [...this.allDeck.namedCards]
- 
-            for (let i = 0; i < this.allDeck.namedCards.length; i++) {
-                randomCard = unnamedCards.splice([Math.floor(Math.random()*unnamedCards.length)],1)
-                this.userDeck.addCardtoDeck(randomCard[0])
-            }
+            cardsForUser = [ ...unnamedCards]
+            userCardLimit = this.allDeck.namedCards.length
         } else {
-            //deal half to each person, perhaps limited at 20 or 25
-
             let cardsForComputer = [...this.allDeck.namedCards]
             for (let i = 0; i < cardsPerPile; i++) {
                 randomCard = cardsForComputer.splice([Math.floor(Math.random()*cardsForComputer.length)],1)
                 this.computerDeck.addCardtoDeck(randomCard[0])
             }  
-            let cardsForUser = [...cardsForComputer, ...unnamedCards]
-            for (let i = 0; i < cardsPerPile; i++) {
-                randomCard = cardsForUser.splice([Math.floor(Math.random()*cardsForUser.length)],1)
-                this.userDeck.addCardtoDeck(randomCard[0])
-            }  
-
-
-
-
-
-
+            cardsForUser = [...cardsForComputer, ...unnamedCards]
+        }
+        for (let i = 0; i < userCardLimit; i++) {
+            randomCard = cardsForUser.splice([Math.floor(Math.random()*cardsForUser.length)],1)
+            this.userDeck.addCardtoDeck(randomCard[0])
         }
 
         this.refreshPileCount() //removed create Piles because they are made now during sort
@@ -105,23 +221,7 @@ class Game {
         playerPile.innerHTML = userCounts
     }
 
-    dealUserHand() {
-        const firstPos = document.querySelector("#firstPos")
-        const secondPos = document.querySelector("#secondPos")
-        const thirdPos = document.querySelector("#thirdPos")
-        const playerCards = document.querySelector("#playerCards")
-        let unplayedUserCards = this.userDeck.totalUnplayedCards()
 
-
-        if (unplayedUserCards > 0) {this.placeCard(firstPos)}
-        if (unplayedUserCards > 0) {this.placeCard(secondPos)}
-        if (unplayedUserCards > 0) {this.placeCard(thirdPos)}
-
- 
- 
-        playerCards.addEventListener('click',this.playCard) 
-        this.refreshPileCount()
-    }
 
     placeCard(pos) {
         if (!pos.children[0]) {
@@ -134,44 +234,9 @@ class Game {
 
     }
 
-    getCardName(namelessCard) {
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = `
-        Hey, this card has never been played. Enter a name for it:<br><br>
-        <form id="add-name">
-            <label><strong>Name for this card:</strong></label>
-            <input type="text" id="cardName"><br><br>
-            <input type="submit" value="Submit">
-        </form>
-        `
-        const form = document.querySelector("#add-name");
-        form.addEventListener("submit", namelessCard.updateName.bind(namelessCard))
 
-    }
 
-    ruleForm(computerID, userID) {
-        let computerCard = this.allDeck.findCard(computerID)
-        let playerCard = this.allDeck.findCard(userID)
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = `
-        I don't know who wins this hand. You decide!<br><br>
-        <form id="add-rule">
-            <label><strong>Choose a Card that wins:</strong></label><br>
-            <select id="ruleWinner" name="ruleWinner" >  
-                <option value="${computerID}">${computerCard.name}</option>  
-                <option value="${userID}">${playerCard.name}</option>  
-            </select><br><br>
 
-            <label><strong>Why does this card win?</strong></label>
-            <input type="text" id="ruleWhy"><br><br>
-
-            <input type="submit" value="Submit">
-        </form>
-        `
-        const form = document.querySelector("#add-rule");
-        form.addEventListener("submit", Rule.createRule.bind(Rule))
-
-    }
 
     playCard(e) {
         const playerPlayed = document.querySelector("#playerPlayed")
@@ -195,8 +260,7 @@ class Game {
     }
 
     playComputerCard() {
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = ""
+        this.clearForm()
 
         const computerPlayed = document.querySelector("#computerPlayed")
         let randomCard = this.computerDeck.drawCard()
@@ -249,33 +313,11 @@ class Game {
 
     }
 
-    clearForm() {
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = ""
-    }
 
-    clearUserHand() {
-        const firstPos = document.querySelector("#firstPos")
-        const secondPos = document.querySelector("#secondPos")
-        const thirdPos = document.querySelector("#thirdPos")
-        firstPos.innerHTML = ""
-        secondPos.innerHTML = ""
-        thirdPos.innerHTML = ""
-    }
 
-    showWinner(msg) {
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = `
-        ${msg}<br><br>
-        <form id="clear-cards">
-            <center><input type="submit" value="Clear Cards"></center>
-        </form>
-        `
-    
-        const form = document.querySelector("#clear-cards");
-        form.addEventListener("submit", this.clearPlayedCards.bind(this))
 
-    }
+
+
 
 
     clearPlayedCards(e) {
@@ -304,24 +346,7 @@ class Game {
 
     }
 
-    gameOver(winner) {
-        //clear board - everything (user hand, form, any played cards)
 
-        this.clearForm()
-        this.clearUserHand()
-        this.appendtoGameLog(winner + " WON!")
-        const formSpace = document.querySelector("#new-card-form")
-        formSpace.innerHTML = `
-        <strong>${winner} WINS!</strong><br><br>
-        <form id="new-game">
-            <center><input type="submit" value="New Game"></center>
-        </form>
-        `
-    
-        const form = document.querySelector("#new-game");
-        form.addEventListener("submit", this.newGame.bind(this))
-        
-    }
 
     newGame(e) {
         e.preventDefault()
@@ -348,23 +373,7 @@ class Game {
 
     }
 
-    currentUserHand() {
-        const firstPos = document.querySelector("#firstPos")
-        const secondPos = document.querySelector("#secondPos")
-        const thirdPos = document.querySelector("#thirdPos")
-        const userHand =[]
-        if (firstPos.children[0]) {
-            userHand.push(this.allDeck.findCard(parseInt(firstPos.children[0].dataset.id,10)))
-        }
-        if (secondPos.children[0]) {
-        userHand.push(this.allDeck.findCard(parseInt(secondPos.children[0].dataset.id,10)))
-        }
-        if (thirdPos.children[0]) {
-        userHand.push(this.allDeck.findCard(parseInt(thirdPos.children[0].dataset.id,10)))
-        }
-        return userHand
 
-    }
 
     
     appendtoGameLog(msg) {
