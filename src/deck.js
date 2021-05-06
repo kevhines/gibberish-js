@@ -1,16 +1,16 @@
 class Deck {
 
     constructor() {
-        this.dealtCards = []
+        this.unplayedCards = []
     }
 
     addCardtoDeck(card) {
-        this.dealtCards.push(card)
+        this.unplayedCards.push(card)
     }
 
     
     findCard(id) {
-        return this.dealtCards.find(card => card.id === id)
+        return this.unplayedCards.find(card => card.id === id)
     }
 
 }
@@ -19,15 +19,12 @@ class PlayableDeck extends Deck {
 
     constructor() {
         super()
-        this.unplayedCards = []
         this.playedCards = []
     }
 
     drawCard() {
         let randomIndex = Math.floor(Math.random()*this.unplayedCards.length)
-        // debugger
         let randomCard = this.unplayedCards.splice([randomIndex],1)
-        // debugger
         this.moveCardToPlayed(randomCard[0])
         return randomCard[0]
     }

@@ -16,7 +16,6 @@ class Rule {
         let loserID
         let winnerID = parseInt(winnerChoice.value, 10)
         loserID = (winnerID === computerID) ? userID: computerID
-// debugger
         const rulesURL = "http://localhost:3000/rules"
         if (ruleWhy.value) {
             console.log("creating rule")
@@ -53,8 +52,8 @@ class Rule {
         let newRule = new Rule(rule)
         let userID = parseInt(playerPlayed.children[0].dataset.id,10)
         let computerID = parseInt(computerPlayed.children[0].dataset.id,10)
-        let userCard = game.userDeck.findCard(userID)
-        let computerCard = game.computerDeck.findCard(computerID)
+        let userCard = game.allDeck.findCard(userID)
+        let computerCard = game.allDeck.findCard(computerID)
         userCard.addRuleToCard(newRule)
         computerCard.addRuleToCard(newRule)
         game.findRule(computerID)

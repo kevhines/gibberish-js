@@ -47,15 +47,15 @@ class Game {
 
     sortCards() {
 
-        const cardsPerPile = (this.allDeck.dealtCards.length) / 2
+        const cardsPerPile = (this.allDeck.unplayedCards.length) / 2
 
         this.appendtoGameLog(cardsPerPile + " cards dealt to each player!")
 
         const totalNamedCards = this.allDeck.namedCards.length
-        let unnamedCards = this.allDeck.dealtCards.filter(card => !this.allDeck.namedCards.includes(card))
+        let unnamedCards = this.allDeck.unplayedCards.filter(card => !this.allDeck.namedCards.includes(card))
         let randomCard 
         if (totalNamedCards <= cardsPerPile) {
-            this.computerDeck.dealtCards = [...this.allDeck.namedCards]
+            this.computerDeck.unplayedCards = [...this.allDeck.namedCards]
  
             for (let i = 0; i < this.allDeck.namedCards.length; i++) {
                 randomCard = unnamedCards.splice([Math.floor(Math.random()*unnamedCards.length)],1)
@@ -71,7 +71,6 @@ class Game {
             }  
             let cardsForUser = [...cardsForComputer, ...unnamedCards]
             for (let i = 0; i < cardsPerPile; i++) {
-                // debugger
                 randomCard = cardsForUser.splice([Math.floor(Math.random()*cardsForUser.length)],1)
                 this.userDeck.addCardtoDeck(randomCard[0])
             }  
@@ -83,19 +82,12 @@ class Game {
 
         }
 
-        this.createPiles()
+        this.refreshPileCount() //removed create Piles because they are made now during sort
         this.dealUserHand()
         
     }
 
-    createPiles() {
-        this.computerDeck.unplayedCards = [...this.computerDeck.dealtCards]
-        this.userDeck.unplayedCards = [...this.userDeck.dealtCards]
-        this.refreshPileCount()
 
-       
-
-    }
 
     refreshPileCount() {
 
@@ -136,7 +128,6 @@ class Game {
         } else {
             const cardIMG = document.createElement("IMG")
             let randomCard = this.userDeck.drawCard()
-            // debugger
             cardIMG.setAttribute("src", "cards/" + randomCard.filename)
             cardIMG.dataset.id = randomCard.id
             pos.append(cardIMG)
@@ -160,8 +151,8 @@ class Game {
     }
 
     ruleForm(computerID, userID) {
-        let computerCard = this.computerDeck.findCard(computerID)
-        let playerCard = this.userDeck.findCard(userID)
+        let computerCard = this.allDeck.findCard(computerID)
+        let playerCard = this.allDeck.findCard(userID)
         const formSpace = document.querySelector("#new-card-form")
         formSpace.innerHTML = `
         I don't know who wins this hand. You decide!<br><br>
@@ -189,14 +180,12 @@ class Game {
             e.currentTarget.removeEventListener(e.type, game.playCard);
             playerPlayed.append(e.target)
         }
-        debugger
         game.hasCardBeenNamed(parseInt(e.target.dataset.id, 10))
     }
 
     
     hasCardBeenNamed(id) {
-        debugger
-        let card = this.userDeck.findCard(id) //error
+        let card = this.allDeck.findCard(id) 
         if (!!card.name) {
             this.appendtoGameLog("User plays " + card.name)
             this.playComputerCard()
@@ -224,18 +213,15 @@ class Game {
 
     findRule(cardID) {
         console.log("find a rule!")
-        let card = this.computerDeck.findCard(cardID)
+        let card = this.allDeck.findCard(cardID)
         const playerPlayed = document.querySelector("#playerPlayed")
         let userID = parseInt(playerPlayed.children[0].dataset.id,10)
-// debugger
         if (card.rules.length > 0) {
             console.log("might have a rule!")
             let ruleForCards = card.rules.find(rule => ((rule.winner_id === cardID && rule.loser_id === userID) || (rule.winner_id === userID && rule.loser_id === cardID)))
            // console.log(ruleforCards)
             if (ruleForCards) {
-                // debugger
                 console.log("found a rule")
-                // debugger
                 this.enactRule(ruleForCards, cardID)
             } else {
                 this.ruleForm(cardID, userID)
@@ -322,10 +308,8 @@ class Game {
         if (this.userDeck.totalUnplayedCards() === 0 && this.userDeck.playedCards.length > 3) {
             let userHand = this.currentUserHand()
             let cardsToShuffle = this.userDeck.playedCards.filter(card => !userHand.includes(card))
-            // debugger
             this.userDeck.unplayedCards = [...cardsToShuffle]
             this.userDeck.playedCards = [...userHand]
-            // debugger
         } else if (this.computerDeck.totalUnplayedCards() === 0) {
             this.computerDeck.unplayedCards = [...this.computerDeck.playedCards]
             this.computerDeck.playedCards = []
@@ -361,8 +345,8 @@ class Game {
 
 }
 
-//error on line 199 - after shuffle it uses findcard to look at dealt cards, but I have non dealt cards - need to check all uses of dealt cards, probably just shift it all to allDeck instead
-// refresh pile count after I draw cards and after computer plays card?
+
+// refresh pile count after I draw cards into hand and after computer plays card?
 //when total cards is 0 someone wins! (check after enactrule)
 //might not need dealth cards - can just use unplayed????
 
