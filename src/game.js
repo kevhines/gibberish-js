@@ -7,6 +7,8 @@ class Game {
         this.firstPos = document.querySelector("#firstPos")
         this.secondPos = document.querySelector("#secondPos")
         this.thirdPos = document.querySelector("#thirdPos")
+        this.computerPlayed = document.querySelector("#computerPlayed")
+        this.playerPlayed = document.querySelector("#playerPlayed")
     }
 
     //createForms
@@ -234,15 +236,10 @@ class Game {
 
     }
 
-
-
-
-
     playCard(e) {
-        const playerPlayed = document.querySelector("#playerPlayed")
         if (e.target.nodeName === "IMG") {
             e.currentTarget.removeEventListener(e.type, game.playCard);
-            playerPlayed.append(e.target)
+            this.playerPlayed.append(e.target)
         }
         game.hasCardBeenNamed(parseInt(e.target.dataset.id, 10))
     }
@@ -261,8 +258,7 @@ class Game {
 
     playComputerCard() {
         this.clearForm()
-
-        const computerPlayed = document.querySelector("#computerPlayed")
+        
         let randomCard = this.computerDeck.drawCard()
 
         this.appendtoGameLog("Computer plays " + randomCard.name)
@@ -270,15 +266,15 @@ class Game {
         const cardIMG = document.createElement("IMG")
         cardIMG.setAttribute("src", "cards/" + randomCard.filename)
         cardIMG.dataset.id = randomCard.id
-        computerPlayed.append(cardIMG)
+        this.computerPlayed.append(cardIMG)
+
         this.refreshPileCount()
         this.findRule(randomCard.id)
     }
 
     findRule(cardID) {
         let card = this.allDeck.findCard(cardID)
-        const playerPlayed = document.querySelector("#playerPlayed")
-        let userID = parseInt(playerPlayed.children[0].dataset.id,10)
+        let userID = parseInt(this.playerPlayed.children[0].dataset.id,10)
         if (card.rules.length > 0) {
             let ruleForCards = card.rules.find(rule => ((rule.winner_id === cardID && rule.loser_id === userID) || (rule.winner_id === userID && rule.loser_id === cardID)))
             if (ruleForCards) {
@@ -313,20 +309,11 @@ class Game {
 
     }
 
-
-
-
-
-
-
-
     clearPlayedCards(e) {
         e.preventDefault();
         this.clearForm()
-        const computerPlayed = document.querySelector("#computerPlayed")
-        const playerPlayed = document.querySelector("#playerPlayed")
-        computerPlayed.children[0].remove()
-        playerPlayed.children[0].remove()
+        this.computerPlayed.children[0].remove()
+        this.playerPlayed.children[0].remove()
 
         if (!this.checkforWinner()) {
             this.checkforShuffle()
@@ -372,9 +359,6 @@ class Game {
         }
 
     }
-
-
-
     
     appendtoGameLog(msg) {
         const gamelog = document.querySelector("#gamelog")
@@ -386,9 +370,8 @@ class Game {
 }
 
 
-//update text
-
 //error handeling - no catch errors in fetch right now and no error handeling in controllers
-//refactor everything!!!!
-
+//write text
+//rename variables
+//blog? video?
 //take turns going first?

@@ -36,7 +36,8 @@ class Card {
             .then(obj => {
                 this.name = obj.name
                 game.hasCardBeenNamed(this.id)
-            }) 
+            })
+            .catch(e => alert(e)) 
 
         } else {
             window.alert("You need to enter a name!")
