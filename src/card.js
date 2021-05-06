@@ -3,7 +3,6 @@ class Card {
         this.id = card.id
         this.name = card.name
         this.filename = card.filename
-        // this.rules = [...card.rules_winner, ...card.rules_loser]
        let winRules = card.rules_winner.map(rule => new Rule(rule))
         let loseRules = card.rules_loser.map(rule => new Rule(rule))
         this.rules = [...winRules, ...loseRules]
@@ -19,9 +18,6 @@ class Card {
         const nameInput = document.querySelector("input[id='cardName']")
         const cardURL = "http://localhost:3000/cards/" + this.id
         if (nameInput.value) {
-            console.log("updated card")
-            console.log(e)
-            console.log(this)
             const body = {
                 card: {
                     name: nameInput.value
@@ -48,29 +44,6 @@ class Card {
 
     }
     
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    static getCards() {
-        fetch("http://localhost:3000/cards")
-        .then( r => r.json())
-        .then(cards => this.listCards(cards))
-        .catch(e => alert(e))
-    
-    }
-
 }
 
 

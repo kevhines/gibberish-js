@@ -124,9 +124,7 @@ class Game {
     }
 
     placeCard(pos) {
-        if (pos.children[0]) {
-            console.log("got a card there")
-        } else {
+        if (!pos.children[0]) {
             const cardIMG = document.createElement("IMG")
             let randomCard = this.userDeck.drawCard()
             cardIMG.setAttribute("src", "cards/" + randomCard.filename)
@@ -214,16 +212,12 @@ class Game {
     }
 
     findRule(cardID) {
-        console.log("find a rule!")
         let card = this.allDeck.findCard(cardID)
         const playerPlayed = document.querySelector("#playerPlayed")
         let userID = parseInt(playerPlayed.children[0].dataset.id,10)
         if (card.rules.length > 0) {
-            console.log("might have a rule!")
             let ruleForCards = card.rules.find(rule => ((rule.winner_id === cardID && rule.loser_id === userID) || (rule.winner_id === userID && rule.loser_id === cardID)))
-           // console.log(ruleforCards)
             if (ruleForCards) {
-                console.log("found a rule")
                 this.enactRule(ruleForCards, cardID)
             } else {
                 this.ruleForm(cardID, userID)
@@ -383,13 +377,9 @@ class Game {
 }
 
 
-//when total cards is 0 someone wins! (check after enactrule)
-//might not need dealth cards - can just use unplayed????
-
-
 //update text
 
-//error handeling - no catch errors right now and no error handeling in controllers
+//error handeling - no catch errors in fetch right now and no error handeling in controllers
 //refactor everything!!!!
 
 //take turns going first?

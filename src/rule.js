@@ -18,9 +18,6 @@ class Rule {
         loserID = (winnerID === computerID) ? userID: computerID
         const rulesURL = "http://localhost:3000/rules"
         if (ruleWhy.value) {
-            console.log("creating rule")
-            console.log(e)
-            console.log(this)
             const body = {
                 rule: {
                     rule: ruleWhy.value,
@@ -57,11 +54,6 @@ class Rule {
         userCard.addRuleToCard(newRule)
         computerCard.addRuleToCard(newRule)
         game.findRule(computerID)
-
-        
-
     }
-
-
-    
+  
 }

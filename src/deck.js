@@ -51,8 +51,6 @@ class PlayableDeck extends Deck {
         this.playedCards = []
     }
 
-
-
 }
 
 class AllCards extends Deck {
