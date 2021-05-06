@@ -370,7 +370,6 @@ class Game {
 }
 
 
-//error handeling - no catch errors in fetch right now and no error handeling in controllers
 //write text
 //rename variables
 //blog? video?
