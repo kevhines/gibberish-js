@@ -118,12 +118,14 @@ class Game {
         const secondPos = document.querySelector("#secondPos")
         const thirdPos = document.querySelector("#thirdPos")
         const playerCards = document.querySelector("#playerCards")
+        let unplayedUserCards = this.userDeck.totalUnplayedCards()
 
-        this.placeCard(firstPos)
 
-        this.placeCard(secondPos)
+        if (unplayedUserCards > 0) {this.placeCard(firstPos)}
+        if (unplayedUserCards > 0) {this.placeCard(secondPos)}
+        if (unplayedUserCards > 0) {this.placeCard(thirdPos)}
 
-        this.placeCard(thirdPos)
+ 
  
         playerCards.addEventListener('click',this.playCard) 
     }
@@ -187,13 +189,14 @@ class Game {
             e.currentTarget.removeEventListener(e.type, game.playCard);
             playerPlayed.append(e.target)
         }
-        //debugger
+        debugger
         game.hasCardBeenNamed(parseInt(e.target.dataset.id, 10))
     }
 
     
     hasCardBeenNamed(id) {
-        let card = this.userDeck.findCard(id)
+        debugger
+        let card = this.userDeck.findCard(id) //error
         if (!!card.name) {
             this.appendtoGameLog("User plays " + card.name)
             this.playComputerCard()
@@ -292,9 +295,60 @@ class Game {
         computerPlayed.children[0].remove()
         playerPlayed.children[0].remove()
 
+        this.checkforWinner()
+        this.checkforShuffle()
         this.refreshPileCount()
-
         this.dealUserHand()
+    }
+
+    checkforWinner() {
+        if (game.userDeck.totalCards === 0) {
+            this.gameOver("Computer")
+        } else if (game.computerDeck.totalCards === 0) {
+            this.gameOver("User")
+        }
+
+    }
+
+    gameOver() {
+        //clear board - everything
+        //display win message
+        //reset to start button
+    }
+
+    checkforShuffle() {
+        //untested!!
+
+        if (this.userDeck.totalUnplayedCards() === 0 && this.userDeck.playedCards.length > 3) {
+            let userHand = this.currentUserHand()
+            let cardsToShuffle = this.userDeck.playedCards.filter(card => !userHand.includes(card))
+            // debugger
+            this.userDeck.unplayedCards = [...cardsToShuffle]
+            this.userDeck.playedCards = [...userHand]
+            // debugger
+        } else if (this.computerDeck.totalUnplayedCards() === 0) {
+            this.computerDeck.unplayedCards = [...this.computerDeck.playedCards]
+            this.computerDeck.playedCards = []
+        }
+
+    }
+
+    currentUserHand() {
+        const firstPos = document.querySelector("#firstPos")
+        const secondPos = document.querySelector("#secondPos")
+        const thirdPos = document.querySelector("#thirdPos")
+        const userHand =[]
+        if (firstPos.children[0]) {
+            userHand.push(this.allDeck.findCard(parseInt(firstPos.children[0].dataset.id,10)))
+        }
+        if (secondPos.children[0]) {
+        userHand.push(this.allDeck.findCard(parseInt(secondPos.children[0].dataset.id,10)))
+        }
+        if (thirdPos.children[0]) {
+        userHand.push(this.allDeck.findCard(parseInt(thirdPos.children[0].dataset.id,10)))
+        }
+        return userHand
+
     }
 
     
@@ -307,10 +361,10 @@ class Game {
 
 }
 
-
-
-//when pile is empty reshuffle (check after enactrule)
+//error on line 199 - after shuffle it uses findcard to look at dealt cards, but I have non dealt cards - need to check all uses of dealt cards, probably just shift it all to allDeck instead
+// refresh pile count after I draw cards and after computer plays card?
 //when total cards is 0 someone wins! (check after enactrule)
+//might not need dealth cards - can just use unplayed????
 
 
 //update text
