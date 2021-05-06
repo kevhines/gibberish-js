@@ -239,7 +239,7 @@ class Game {
     playCard(e) {
         if (e.target.nodeName === "IMG") {
             e.currentTarget.removeEventListener(e.type, game.playCard);
-            this.playerPlayed.append(e.target)
+            game.playerPlayed.append(e.target)
         }
         game.hasCardBeenNamed(parseInt(e.target.dataset.id, 10))
     }
