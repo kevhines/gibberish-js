@@ -176,7 +176,6 @@ class Game {
     sortCards() {
 
         const cardsPerPile = (this.allDeck.unplayedCards.length) / 2
-        this.appendtoGameLog(cardsPerPile + " cards dealt to each player!")
         const totalNamedCards = this.allDeck.namedCards.length
         let unnamedCards = this.allDeck.unplayedCards.filter(card => !this.allDeck.namedCards.includes(card))
         let randomCard 
@@ -195,6 +194,7 @@ class Game {
             }  
             cardsForUser = [...cardsForComputer, ...unnamedCards]
         }
+        this.appendtoGameLog(userCardLimit + " cards dealt to each player!")
         for (let i = 0; i < userCardLimit; i++) {
             randomCard = cardsForUser.splice([Math.floor(Math.random()*cardsForUser.length)],1)
             this.userDeck.addCardtoDeck(randomCard[0])
