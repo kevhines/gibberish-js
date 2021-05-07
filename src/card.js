@@ -3,7 +3,7 @@ class Card {
         this.id = card.id
         this.name = card.name
         this.filename = card.filename
-       let winRules = card.rules_winner.map(rule => new Rule(rule))
+        let winRules = card.rules_winner.map(rule => new Rule(rule))
         let loseRules = card.rules_loser.map(rule => new Rule(rule))
         this.rules = [...winRules, ...loseRules]
     }

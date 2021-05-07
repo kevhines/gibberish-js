@@ -107,7 +107,7 @@ class Game {
         formSpace.innerHTML = ""
     }
 
-    ///end of form creation (and the clear form thing.)
+    ///end of form creation (and the clear form function.)
 
     //stuff involving User Hand
 
@@ -314,10 +314,9 @@ class Game {
         this.clearForm()
         this.computerPlayed.children[0].remove()
         this.playerPlayed.children[0].remove()
-
+        this.refreshPileCount()
         if (!this.checkforWinner()) {
             this.checkforShuffle()
-            this.refreshPileCount()
             this.dealUserHand()
         }
     }
@@ -368,9 +367,3 @@ class Game {
     }
 
 }
-
-
-//write text
-//rename variables
-//blog? video?
-//take turns going first?
