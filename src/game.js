@@ -296,12 +296,12 @@ class Game {
         if (rule.winner_id === computerID) {
             message = `Computer Wins: ${winnerCard.name} beats ${loserCard.name} because ${rule.rule}` 
             //remove loserCard from user deck
-            game.computerDeck.moveCardToPlayed(loserCard)
-            game.userDeck.removeCardFromDeck(loserCard)
+            this.computerDeck.moveCardToPlayed(loserCard)
+            this.userDeck.removeCardFromDeck(loserCard)
         } else {
             message = `User Wins: ${winnerCard.name} beats ${loserCard.name} because ${rule.rule}`
-            game.userDeck.moveCardToPlayed(loserCard)
-            game.computerDeck.removeCardFromDeck(loserCard)
+            this.userDeck.moveCardToPlayed(loserCard)
+            this.computerDeck.removeCardFromDeck(loserCard)
         }
         this.appendtoGameLog(message)
         this.clearForm()
@@ -322,10 +322,10 @@ class Game {
     }
 
     checkforWinner() {
-        if (game.userDeck.totalCards() === 0) {
+        if (this.userDeck.totalCards() === 0) {
             this.gameOver("Computer")
             return true
-        } else if (game.computerDeck.totalCards() === 0) {
+        } else if (this.computerDeck.totalCards() === 0) {
             this.gameOver("User")
             return true
         }
