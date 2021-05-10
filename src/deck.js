@@ -60,13 +60,6 @@ class AllCards extends Deck {
         this.namedCards = []
     }
 
-    addCardtoDeck(card) {
-        super.addCardtoDeck(card)
-        if (card.name) {
-            this.namedCards.push(card)
-        }
-    }
-
     resetNamed() {
         this.namedCards = this.unplayedCards.filter(card => card.name)
     }

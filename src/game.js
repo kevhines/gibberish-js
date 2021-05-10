@@ -149,10 +149,22 @@ class Game {
 
     //end of User Hand stuff
 
+    prepForGame(e) {
+        e.preventDefault()
+        this.clearForm()
+        this.appendtoGameLog("New Game Starting")
+        this.computerDeck.clear()
+        this.userDeck.clear()
+    }
+
+    newGame(e) {
+        this.prepForGame(e)
+        this.sortCards()
+        
+    }
 
     dealCards(e) {
-        e.preventDefault();
-        this.clearForm()
+        this.prepForGame(e)
         this.fetchCards()
     }
 
@@ -174,7 +186,7 @@ class Game {
     }
 
     sortCards() {
-
+        this.allDeck.resetNamed()
         const cardsPerPile = (this.allDeck.unplayedCards.length) / 2
         const totalNamedCards = this.allDeck.namedCards.length
         let unnamedCards = this.allDeck.unplayedCards.filter(card => !this.allDeck.namedCards.includes(card))
@@ -332,18 +344,6 @@ class Game {
 
     }
 
-
-
-    newGame(e) {
-        e.preventDefault()
-        this.clearForm()
-        this.appendtoGameLog("New Game Starting")
-        this.computerDeck.clear()
-        this.userDeck.clear()
-        this.allDeck.resetNamed()
-        this.sortCards()
-        
-    }
 
     checkforShuffle() {
 
