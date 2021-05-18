@@ -1,3 +1,5 @@
+
+
 class Game {
 
     constructor() {
@@ -30,6 +32,7 @@ class Game {
         `
         this.createForm(stringHTML,this.dealCards.bind(this))
     }
+
 
     getCardName(namelessCard) {
         
@@ -128,14 +131,12 @@ class Game {
 
     dealUserHand() {
         const playerCards = document.querySelector("#playerCards")
-        let unplayedUserCards = this.userDeck.totalUnplayedCards()
 
 
-        if (unplayedUserCards > 0) {this.placeCard(this.firstPos)}
-        if (unplayedUserCards > 0) {this.placeCard(this.secondPos)}
-        if (unplayedUserCards > 0) {this.placeCard(this.thirdPos)}
+        if (this.userDeck.totalUnplayedCards() > 0) {this.placeCard(this.firstPos)}
+        if (this.userDeck.totalUnplayedCards() > 0) {this.placeCard(this.secondPos)}
+        if (this.userDeck.totalUnplayedCards() > 0) {this.placeCard(this.thirdPos)}
 
- 
  
         playerCards.addEventListener('click',this.playCard) 
         this.refreshPileCount()
@@ -344,15 +345,28 @@ class Game {
 
     }
 
+    test() {
+        console.log("played-user")
+        this.userDeck.playedCards.forEach((card) => console.log(card))
+        console.log("unplayed-user")
+        this.userDeck.unplayedCards.forEach((card) => console.log(card))
+        console.log("played-computer")
+        this.computerDeck.playedCards.forEach((card) => console.log(card))
+        console.log("unplayed-computer")
+        this.computerDeck.unplayedCards.forEach((card) => console.log(card))
+        
+    }
+
 
     checkforShuffle() {
 
-        if (this.userDeck.totalUnplayedCards() === 0 && this.userDeck.playedCards.length > 3) {
+        if (this.userDeck.totalUnplayedCards() === 0) {
             let userHand = this.currentUserHand()
             let cardsToShuffle = this.userDeck.playedCards.filter(card => !userHand.includes(card))
             this.userDeck.unplayedCards = [...cardsToShuffle]
             this.userDeck.playedCards = [...userHand]
-        } else if (this.computerDeck.totalUnplayedCards() === 0) {
+        }  
+        if (this.computerDeck.totalUnplayedCards() === 0) {
             this.computerDeck.unplayedCards = [...this.computerDeck.playedCards]
             this.computerDeck.playedCards = []
         }
