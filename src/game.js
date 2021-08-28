@@ -170,7 +170,7 @@ class Game {
     }
 
     fetchCards() {
-        fetch("http://localhost:3000/cards")
+        fetch("https://gibberish-cards-api.herokuapp.com/cards")
         .then( r => r.json())
         .then(cards => {this.buildDecks(cards)})
         .catch(e => alert(e))

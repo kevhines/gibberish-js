@@ -16,7 +16,7 @@ class Rule {
         let loserID
         let winnerID = parseInt(winnerChoice.value, 10)
         loserID = (winnerID === computerID) ? userID: computerID
-        const rulesURL = "http://localhost:3000/rules"
+        const rulesURL = "https://gibberish-cards-api.herokuapp.com/rules"
         if (ruleWhy.value) {
             const body = {
                 rule: {

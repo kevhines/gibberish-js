@@ -16,7 +16,7 @@ class Card {
     updateName(e) {
         e.preventDefault();
         const nameInput = document.querySelector("input[id='cardName']")
-        const cardURL = "http://localhost:3000/cards/" + this.id
+        const cardURL = "https://gibberish-cards-api.herokuapp.com/cards" + this.id
         if (nameInput.value) {
             const body = {
                 card: {
